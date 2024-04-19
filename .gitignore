@@ -173,8 +173,10 @@ crash.*.log
 *.pub
 
 
-# TERRAFORM FILES 
+# OTHERS FILES 
 # ----------------------------------------------------------------
 
 **/artifacts
 **/wandb
+
+src/airflow/dags/output/
