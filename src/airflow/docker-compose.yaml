@@ -44,7 +44,6 @@
 #
 # Feel free to modify this file to suit your needs.
 ---
-version: "3.8"
 x-airflow-common: &airflow-common
   # In order to add custom dependencies or upgrade provider packages you can use your extended image.
   # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
@@ -79,6 +78,8 @@ x-airflow-common: &airflow-common
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
   user: "${AIRFLOW_UID:-50000}:0"
+  networks:
+    - airflow_subnet
   depends_on: &airflow-common-depends-on
     redis:
       condition: service_healthy
@@ -101,6 +102,9 @@ services:
       retries: 5
       start_period: 5s
     restart: always
+    networks:
+      airflow_subnet:
+        ipv4_address: 172.22.0.3
 
   redis:
     image: redis:latest
@@ -113,6 +117,9 @@ services:
       retries: 50
       start_period: 30s
     restart: always
+    networks:
+      airflow_subnet:
+        ipv4_address: 172.22.0.4
 
   airflow-webserver:
     <<: *airflow-common
@@ -126,6 +133,9 @@ services:
       retries: 5
       start_period: 30s
     restart: always
+    networks:
+      airflow_subnet:
+        ipv4_address: 172.22.0.5
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -141,6 +151,9 @@ services:
       retries: 5
       start_period: 30s
     restart: always
+    networks:
+      airflow_subnet:
+        ipv4_address: 172.22.0.6
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -164,6 +177,9 @@ services:
       # See https://airflow.apache.org/docs/docker-stack/entrypoint.html#signal-propagation
       DUMB_INIT_SETSID: "0"
     restart: always
+    networks:
+      airflow_subnet:
+        ipv4_address: 172.22.0.7
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -183,6 +199,9 @@ services:
       retries: 5
       start_period: 30s
     restart: always
+    networks:
+      airflow_subnet:
+        ipv4_address: 172.22.0.8
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -314,6 +333,16 @@ services:
       - -P
       - .htpasswd/htpasswd.txt
       - --overwrite
+    networks:
+      airflow_subnet:
+        ipv4_address: 172.22.0.9
 
 volumes:
   postgres-db-volume:
+
+networks:
+  airflow_subnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
