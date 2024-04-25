@@ -3,7 +3,18 @@ import warnings
 from pathlib import Path
 from typing import Union
 
+from batch_prediction_pipeline import utils
 from dotenv import load_dotenv
+
+ENV_VARIABLES = [
+    "FS_API_KEY",
+    "FS_PROJECT_NAME",
+    "WANDB_API_KEY",
+    "WANDB_ENTITY",
+    "WANDB_PROJECT",
+]
+
+logger = utils.get_logger(__name__)
 
 warnings.filterwarnings(action="ignore", category=FutureWarning, module="sktime")
 
@@ -22,8 +33,13 @@ def load_env_vars(root_dir: Union[str, Path]) -> dict:
     if isinstance(root_dir, str):
         root_dir = Path(root_dir)
 
-    load_dotenv(dotenv_path=root_dir / ".env.default")
-    load_dotenv(dotenv_path=root_dir / ".env", override=True)
+    if os.path.exists(os.path.join(root_dir, ".env")):
+        logger.info("Loading .env file")
+        load_dotenv(dotenv_path=root_dir / ".env", override=True)
+
+    for env_var in ENV_VARIABLES:
+        if env_var not in os.environ:
+            logger.error("{env_var} must be defined in the environment")
 
     return dict(os.environ)
 
