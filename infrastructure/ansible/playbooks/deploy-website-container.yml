@@ -1,0 +1,12 @@
+- name: Deploy Docker container with app-api, app-frontend and app-monitoring
+  hosts: "*"
+  become: true
+  gather_facts: false
+  
+  tasks:
+    - name: "Deploy container"
+      ansible.builtin.docker_compose:
+        project_src: /home/ubuntu/Energy_Forecasting/src/deploy/
+        files: ["app-docker-compose.yml"]
+        build: true
+        state: present

@@ -1,0 +1,14 @@
+- name: Configure .env files for web server
+  hosts: "*"
+  become: true
+  gather_facts: false
+  vars_files:
+    - ../group_vars/credentials.yml
+
+  tasks:
+    - name: "Configure App-API credentials"
+      ansible.builtin.shell:
+        cmd: echo "{{ item.key }}={{ item.value }}" | sudo tee /home/ubuntu/Energy_Forecasting/src/app-api/.env -a
+      loop:
+        - { key: AWS_ACCESS_KEY_ID, value: "{{ AWS_ACCESS_KEY_ID }}" }
+        - { key: AWS_SECRET_ACCESS_KEY, value: "{{ AWS_SECRET_ACCESS_KEY }}" }

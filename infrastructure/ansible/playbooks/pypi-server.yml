@@ -1,0 +1,38 @@
+- name: Configure PYPI private server
+  hosts: "*"
+  become: true
+  
+  tasks: 
+    - name: Install require packages
+      ansible.builtin.apt:
+        name: apache2-utils
+        update_cache: true
+
+      ansible.builtin.pip:
+        name: passlib
+    
+    - name: Configure credentials
+      ansible.builtin.command:
+        cmd: mkdir ~/.htpasswd
+
+      ansible.builtin.command:
+        cmd: htpasswd -b -sc ~/.htpasswd/htpasswd.txt energy-forecasting dev-pass
+
+    - name: Install Poetry
+      ansible.builtin.command:
+        cmd: curl -sSL https://install.python-poetry.org | python3 -
+
+      ansible.builtin.command:
+        cmd: export PATH="/home/ubuntu/.local/bin:$PATH"
+
+    - name: Configure Poetry credentials
+      ansible.builtin.command:
+        cmd: poetry config repositories.my-pypi http://localhost
+      
+      ansible.builtin.command:
+        cmd: poetry config http-basic.my-pypi energy-forecasting dev-pass
+
+    
+
+      
+

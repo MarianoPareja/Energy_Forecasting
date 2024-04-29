@@ -1,0 +1,35 @@
+- name: Install and congfigure Python3.9 venv
+  hosts: "*"
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Add Deadsnakes PPA repository
+      ansible.builtin.apt_repository:
+        repo: ppa:deadsnakes/ppa
+        state: present
+        update_cache: true
+
+    - name: Install Python3.9 and Python3.9-disutils
+      ansible.builtin.apt:
+        pkg:
+          - python3.9
+          - python3.9-distutils
+          - python3-pip
+          - python3.9-venv
+
+    - name: Create virtual environment
+      ansible.builtin.command:
+        chdir: /home/ubuntu/Energy_Forecasting/
+        cmd: python3.9 -m venv venv
+        creates: /home/ubuntu/Energy_Forecasting/venv
+
+    - name: Activate virtual environment
+      ansible.builtin.command:
+        chdir: /home/ubuntu/Energy_Forecasting/venv/bin/
+        cmd: activate
+
+    - name: Install Docker (Needed to use docker-compose with Ansible)
+      ansible.builtin.pip:
+        name: docker
+        state: present

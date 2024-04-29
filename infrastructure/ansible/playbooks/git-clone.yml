@@ -1,0 +1,20 @@
+- name: Clone GitHub repository
+  hosts: myhosts
+  become: true
+  vars_files:
+    - ../group_vars/credentials.yml
+
+  tasks:
+    - name: Create project folder
+      ansible.builtin.file:
+        path: /home/ubuntu/Energy_Forecasting
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+        state: directory
+
+    - name: Clone GitHub repository
+      ansible.builtin.git:
+        clone: true
+        dest: /home/ubuntu/Energy_Forecasting
+        repo: https://{{ GITHUB_TOKEN }}@github.com/MarianoPareja/Energy_Forecasting
