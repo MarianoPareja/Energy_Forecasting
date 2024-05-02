@@ -1,38 +1,34 @@
 - name: Configure PYPI private server
   hosts: "*"
   become: true
-  
+
   tasks: 
-    - name: Install require packages
+    - name: Install apache2-utils
       ansible.builtin.apt:
         name: apache2-utils
         update_cache: true
 
+    - name: Install required pip packages
       ansible.builtin.pip:
-        name: passlib
-    
-    - name: Configure credentials
-      ansible.builtin.command:
-        cmd: mkdir ~/.htpasswd
+        name: [passlib, poetry]
+        virtualenv: /home/ubuntu/Energy_Forecasting/venv
 
+    - name: Configure credentials
+      ansible.builtin.file:
+        path: ~/.htpasswd
+        owner: ubuntu
+        group: ubuntu
+        mode: '0744'
+        state: directory
+
+    - name: Configure name and password
       ansible.builtin.command:
         cmd: htpasswd -b -sc ~/.htpasswd/htpasswd.txt energy-forecasting dev-pass
 
-    - name: Install Poetry
+    - name: Configure poetry credentials [1]
       ansible.builtin.command:
-        cmd: curl -sSL https://install.python-poetry.org | python3 -
-
+        cmd: /home/ubuntu/Energy_Forecasting/venv/bin/poetry config repositories.my-pypi http://localhost
+        
+    - name: Congfigure poetry credentials [2]
       ansible.builtin.command:
-        cmd: export PATH="/home/ubuntu/.local/bin:$PATH"
-
-    - name: Configure Poetry credentials
-      ansible.builtin.command:
-        cmd: poetry config repositories.my-pypi http://localhost
-      
-      ansible.builtin.command:
-        cmd: poetry config http-basic.my-pypi energy-forecasting dev-pass
-
-    
-
-      
-
+        cmd: /home/ubuntu/Energy_Forecasting/venv/bin/poetry config http-basic.my-pypi energy-forecasting dev-pass

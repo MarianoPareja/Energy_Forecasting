@@ -2,11 +2,16 @@
   hosts: "*"
   become: true
   gather_facts: false
-  
   tasks:
-    - name: "Deploy container"
-      ansible.builtin.docker_compose:
-        project_src: /home/ubuntu/Energy_Forecasting/src/deploy/
-        files: ["app-docker-compose.yml"]
-        build: true
-        state: present
+    - name: "Deploy Docker-Compose website container"
+      ansible.builtin.command:
+        chdir: /home/ubuntu/Energy_Forecasting/src/
+        cmd: docker compose -f deploy/app-docker-compose.yml --project-directory . up -d --build
+   
+    # TODO: Run the docker container using ansible.builtin.docker_compose
+    # - name: "Deploy container"
+    #   ansible.builtin.docker_compose:
+    #     project_src: /home/ubuntu/Energy_Forecasting/src/deploy/
+    #     files: ["app-docker-compose.yml"]
+    #     build: true
+    #     state: present

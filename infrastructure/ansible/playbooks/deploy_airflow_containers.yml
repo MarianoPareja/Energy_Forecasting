@@ -1,0 +1,22 @@
+- name: Deploy Airflow Docker containers
+  hosts: "*"
+  become: true
+  gather_facts: false
+  tasks:
+    - name: "Deploy Docker-Compose airflow"
+      ansible.builtin.command:
+        chdir: /home/ubuntu/Energy_Forecasting/src/airflow
+        cmd: docker compose up airflow-init
+
+    - name: "Deploy Docker-Compose airflow [2]"
+      ansible.builtin.command:
+        chdir: /home/ubuntu/Energy_Forecasting/src/airflow
+        cmd: docker compose --env-file .env up --build -d
+   
+    # TODO: Run the docker container using ansible.builtin.docker_compose
+    # - name: "Deploy container"
+    #   ansible.builtin.docker_compose:
+    #     project_src: /home/ubuntu/Energy_Forecasting/src/deploy/
+    #     files: ["app-docker-compose.yml"]
+    #     build: true
+    #     state: present

@@ -23,13 +23,3 @@
         chdir: /home/ubuntu/Energy_Forecasting/
         cmd: python3.9 -m venv venv
         creates: /home/ubuntu/Energy_Forecasting/venv
-
-    - name: Activate virtual environment
-      ansible.builtin.command:
-        chdir: /home/ubuntu/Energy_Forecasting/venv/bin/
-        cmd: activate
-
-    - name: Install Docker (Needed to use docker-compose with Ansible)
-      ansible.builtin.pip:
-        name: docker
-        state: present

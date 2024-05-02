@@ -1,0 +1,23 @@
+- name: Upload PYPI packages to server
+  hosts: "*"
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: "Build packages"
+      ansible.builtin.command:
+        chdir: /home/ubuntu/Energy_Forecasting/src/{{ item }}/
+        cmd: /home/ubuntu/Energy_Forecasting/venv/bin/poetry build
+      loop: 
+        - feature-pipeline
+        - training-pipeline
+        - batch-prediction-pipeline
+      
+    - name: "Publish packages"
+      ansible.builtin.command:
+        chdir: /home/ubuntu/Energy_Forecasting/src/{{ item }}/
+        cmd: /home/ubuntu/Energy_Forecasting/venv/bin/poetry publish -r my-pypi
+      loop: 
+        - feature-pipeline
+        - training-pipeline
+        - batch-prediction-pipeline
