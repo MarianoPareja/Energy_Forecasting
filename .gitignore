@@ -179,4 +179,6 @@ crash.*.log
 **/artifacts
 **/wandb
 
-src/airflow/dags/output/
+src/airflow/logs/
+
+.vscode/
