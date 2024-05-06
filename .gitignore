@@ -182,3 +182,12 @@ crash.*.log
 src/airflow/logs/
 
 .vscode/
+
+infrastructure/ansible/group_vars/credentials.yml
+infrastructure/ansible/group_vars/secret_key
+
+
+## ANSIBLE FILES
+**/secrets-key
+**/secrets.enc.yml
+infrastructure/ansible/keys/
