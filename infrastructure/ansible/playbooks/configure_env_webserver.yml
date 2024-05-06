@@ -3,7 +3,7 @@
   become: true
   gather_facts: false
   vars_files:
-    - ../group_vars/credentials.yml
+    - ../inventories/dev/group_vars/secrets.enc.yml
 
   tasks:
     - name: "Configure App-API credentials"

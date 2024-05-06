@@ -1,8 +1,10 @@
 - name: Configure PYPI private server
   hosts: "*"
   become: true
+  vars_files:
+    - ../inventories/dev/group_vars/secrets.enc.yml
 
-  tasks: 
+  tasks:
     - name: Install apache2-utils
       ansible.builtin.apt:
         name: apache2-utils
@@ -15,7 +17,7 @@
 
     - name: Configure credentials
       ansible.builtin.file:
-        path: ~/.htpasswd
+        path: /home/ubuntu/.htpasswd
         owner: ubuntu
         group: ubuntu
         mode: '0744'
@@ -23,7 +25,7 @@
 
     - name: Configure name and password
       ansible.builtin.command:
-        cmd: htpasswd -b -sc ~/.htpasswd/htpasswd.txt energy-forecasting dev-pass
+        cmd: htpasswd -b -sc /home/ubuntu/.htpasswd/htpasswd.txt energy-forecasting "{{ PYPI_SERVER_PASSWORD }}"
 
     - name: Configure poetry credentials [1]
       ansible.builtin.command:
@@ -31,4 +33,4 @@
         
     - name: Congfigure poetry credentials [2]
       ansible.builtin.command:
-        cmd: /home/ubuntu/Energy_Forecasting/venv/bin/poetry config http-basic.my-pypi energy-forecasting dev-pass
+        cmd: /home/ubuntu/Energy_Forecasting/venv/bin/poetry config http-basic.my-pypi energy-forecasting "{{ PYPI_SERVER_PASSWORD }}"

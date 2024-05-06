@@ -1,7 +1,8 @@
-- hosts: "*"
-  become: yes
+- name: Update apt packages
+  hosts: webserver
+  become: true
   tasks:
-    - name: apt
-      apt:
-        update_cache: yes
+    - name: Apt
+      ansible.builtin.apt:
+        update_cache: true
         upgrade: "yes"

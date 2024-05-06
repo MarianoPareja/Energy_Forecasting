@@ -1,0 +1,18 @@
+- name: ML Server Configuration
+  hosts: webserver
+  gather_facts: false
+
+- name: Update apt in Ubuntu
+  ansible.builtin.import_playbook: playbooks/apt.yml
+
+- name: Install Docker engine
+  ansible.builtin.import_playbook: playbooks/docker.yml
+
+- name: Clone GitHub repository
+  ansible.builtin.import_playbook: playbooks/git-clone.yml
+
+- name: Load .env files
+  ansible.builtin.import_playbook: playbooks/configure_env_webserver.yml
+
+- name: Run docker containers (docker-compose file)
+  ansible.builtin.import_playbook: playbooks/deploy-website-container.yml

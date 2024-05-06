@@ -1,8 +1,8 @@
 - name: Clone GitHub repository
-  hosts: myhosts
+  hosts: "*"
   become: true
   vars_files:
-    - ../group_vars/credentials.yml
+    - ../inventories/dev/group_vars/secrets.enc.yml
 
   tasks:
     - name: Create project folder
@@ -18,3 +18,4 @@
         clone: true
         dest: /home/ubuntu/Energy_Forecasting
         repo: https://{{ GITHUB_TOKEN }}@github.com/MarianoPareja/Energy_Forecasting
+        
