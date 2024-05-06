@@ -327,7 +327,7 @@ services:
     ports:
       - "80:8080"
     volumes:
-      - home/ubuntu/.htpasswd:/data/htpasswd
+      - /home/ubuntu/.htpasswd:/data/htpasswd
     command:
       - run
       - -P
