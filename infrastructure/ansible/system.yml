@@ -1,0 +1,12 @@
+- name: Configure Website server and ML server
+  hosts: ml_server, web_server
+
+- name: Configure ML server
+  ansible.builtin.import_playbook: ./mlserver.yml
+  vars:
+    hostslist: ml_server
+
+- name: Configure Website server
+  ansible.builtin.import_playbook: ./webserver.yml
+  vars:
+    hostslist: web_server

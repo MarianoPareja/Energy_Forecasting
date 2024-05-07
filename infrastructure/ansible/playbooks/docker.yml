@@ -1,5 +1,5 @@
 - name: Install Docker on Ubuntu
-  hosts: "*"
+  hosts: "{{ hostslist }}"
   become: true
   vars:
     arch_mapping:

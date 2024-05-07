@@ -1,27 +1,43 @@
 - name: ML Server Configuration
-  hosts: webserver
+  hosts: "{{ hostslist | default('ml_server') }}"
   gather_facts: false
 
 - name: Update apt in Ubuntu
   ansible.builtin.import_playbook: playbooks/apt.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Install Docker engine
   ansible.builtin.import_playbook: playbooks/docker.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Clone GitHub repository
   ansible.builtin.import_playbook: playbooks/git-clone.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Install Python3.9 and configure venv (virtual environment)
   ansible.builtin.import_playbook: playbooks/python3.9.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Load .env files
   ansible.builtin.import_playbook: playbooks/configure_airflow_server_credentials.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Configure PyPi server
   ansible.builtin.import_playbook: playbooks/pypi-server.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Run docker containers (docker-compose file)
   ansible.builtin.import_playbook: playbooks/deploy_airflow_containers.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Upload PyPi packages
-- ansible.builtin.import_playbook: playbooks/upload_pypi_packages.yml
+  ansible.builtin.import_playbook: playbooks/upload_pypi_packages.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"

@@ -1,5 +1,5 @@
 - name: Configure .env files for web server
-  hosts: "*"
+  hosts: "{{ hostslist }}"
   become: true
   gather_facts: false
   vars_files:

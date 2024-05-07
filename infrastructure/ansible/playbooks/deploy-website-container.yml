@@ -1,5 +1,5 @@
 - name: Deploy Docker container with app-api, app-frontend and app-monitoring
-  hosts: "*"
+  hosts: "{{ hostslist }}"
   become: true
   gather_facts: false
   tasks:

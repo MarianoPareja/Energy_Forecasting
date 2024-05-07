@@ -1,18 +1,28 @@
 - name: ML Server Configuration
-  hosts: webserver
+  hosts: "{{ hostslist | default('web_server') }}"
   gather_facts: false
 
 - name: Update apt in Ubuntu
   ansible.builtin.import_playbook: playbooks/apt.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Install Docker engine
   ansible.builtin.import_playbook: playbooks/docker.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Clone GitHub repository
   ansible.builtin.import_playbook: playbooks/git-clone.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Load .env files
   ansible.builtin.import_playbook: playbooks/configure_env_webserver.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"
 
 - name: Run docker containers (docker-compose file)
   ansible.builtin.import_playbook: playbooks/deploy-website-container.yml
+  vars:
+    hostslist: "{{ ansible_play_hosts }}"

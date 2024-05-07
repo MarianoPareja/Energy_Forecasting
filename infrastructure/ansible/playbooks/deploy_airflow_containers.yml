@@ -1,5 +1,5 @@
 - name: Deploy Airflow Docker containers
-  hosts: "*"
+  hosts: "{{ hostslist }}"
   become: true
   gather_facts: false
   tasks:

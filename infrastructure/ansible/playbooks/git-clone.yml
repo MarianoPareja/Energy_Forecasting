@@ -1,5 +1,5 @@
 - name: Clone GitHub repository
-  hosts: "*"
+  hosts: "{{ hostslist }}"
   become: true
   vars_files:
     - ../inventories/dev/group_vars/secrets.enc.yml

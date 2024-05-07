@@ -1,5 +1,5 @@
-- name: Update apt packages
-  hosts: webserver
+- name: "{{ hostslist }}"
+  hosts: web_server, ml_server
   become: true
   tasks:
     - name: Apt

@@ -1,5 +1,5 @@
 - name: Upload PYPI packages to server
-  hosts: "*"
+  hosts: "{{ hostslist }}"
   become: true
   gather_facts: false
 
