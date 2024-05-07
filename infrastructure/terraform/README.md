@@ -1,4 +1,4 @@
-# ANSIBLE 
+# TERRAFORM 
 
 This folder contains .tf used for the infrastructure setup and deployment. \
 **_IMPORTANT: Provisioning and deploying this infrastructure will incur costs for your AWS account. Please make sure to 'detroy' your resources if they are not being used._**
