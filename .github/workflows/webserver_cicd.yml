@@ -1,0 +1,30 @@
+name: CI/CD pipeline for the web applications (API + Frontend)
+
+on:
+  push:
+    paths-ignore:
+      - "infrastructure/**"
+      - "assets/**"
+      - ".github/**"
+      - "src/batch-prediction-pipeline/"
+      - "src/feature-pipeline/"
+      - "src/training-pipeline"
+      - "**/*.yml"
+      - "**/*.md"
+    branches: ["main"]
+
+jobs: 
+  integration:
+    name: Continuous Integration
+    runs-on: ubuntu-lastest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # TODO: Add linting
+      - name: Lint code
+        run: echo "Linting repository"
+
+      # TODO: Add unit tests
+      - name: Run unit tests
+        run: echo "Running unit tests"
