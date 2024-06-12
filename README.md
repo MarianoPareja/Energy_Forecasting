@@ -120,15 +120,15 @@ docker-compose up src/deploy
 ## PROJECT STRUCTURE
 The project main structure is as follows:
 ```
-├── README.md                       -> Lorem Ipsum is simply dummy text of the printing and typesetting industry  
-├── .github/workflows               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── CI/CD Pipelines             -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-├── infastructure                   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── ansible                     -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   │   ├── group_vars              -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   │   ├── playbooks               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   │   └── hosts.ini               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── terraform                   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+├── README.md                       
+├── .github/workflows               
+│   ├── CI/CD Pipelines             
+├── infastructure                   
+│   ├── ansible                     
+│   │   ├── group_vars              
+│   │   ├── playbooks               
+│   │   └── hosts.ini               
+│   ├── terraform                   
 │   │   ├── modules
 ├── src               
 │   ├── airflow                     
