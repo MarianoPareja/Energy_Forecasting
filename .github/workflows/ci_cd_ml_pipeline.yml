@@ -1,0 +1,44 @@
+name: CD for the ML-Pipeline that builds all the pipeline modules and pushes them to the private PyPI registry. From where Airflow will install the latest versions and use them in the next run.
+
+on:
+  push:
+    paths-ignore:
+      - "src/app-api/"
+      - "src/app-frontend/"
+      - "src/app-monitoring/"
+      - "**/*.yml"
+      - "**/*.md"
+    branches: ["main"]
+
+jobs:
+  Deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # - name: Build & Deploy
+      #   uses: 
+
+    env:
+      PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      HOSTNAME: ${{secrets.SSH_HOST}}
+      USER_NAME: ${{secrets.USER_NAME}}
+
+      run: |
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+            # Now we have got the access of EC2 and we will start the deploy .
+            cd /home/ubuntu/<PROJECT_DIRECTORY> &&
+            git checkout dev &&
+            git fetch --all &&
+            git reset --hard origin/dev &&
+            git pull origin dev &&
+            sudo npm i &&
+            sudo npm run build &&
+            sudo pm2 stop ./dist/index.js &&
+            sudo pm2 start ./dist/index.js
+            '

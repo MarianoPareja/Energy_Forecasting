@@ -2,9 +2,13 @@ provider "aws" {
   region = "sa-east-1"
 }
 
+module "tf-state" {
+  source      = "./modules/tf_state/"
+  bucket_name = "cc-tf-state-backend-ci-cd"
+}
+
 module "network" {
   source = "./modules/network/"
-
 }
 
 module "compute" {
