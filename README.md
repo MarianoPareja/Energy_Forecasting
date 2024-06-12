@@ -12,6 +12,7 @@ allocate resources efficiently.
     - [Credentials](#credentials)
     - [Build with Terraform](#build-with-terraform)
     - [Configure with Ansible](#configure-with-ansible)
+- [Local Debugging](#local-debugging)
 - [Project Structure](#project-structure)
 - [Main Stack](#main-stack)
 - [User Interface](#user-interface)
@@ -22,32 +23,6 @@ The ML Lifecycle uses batch processing with an FTI(Feature-Training-Inference) m
 The data is served by two UIs or via REST APIs.
 
 <img src="./assets/images/ml-lifecycle.png" />
-
-## PROJECT STRUCTURE
-The project main structure is as follows:
-```
-├── README.md                       -> Lorem Ipsum is simply dummy text of the printing and typesetting industry  
-├── .github/workflows               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── CI/CD Pipelines             -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-├── infastructure                   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── ansible                     -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   │   ├── group_vars              -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   │   ├── playbooks               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   │   └── hosts.ini               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── terraform                   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   │   ├── modules
-│   │   ├── xxx
-│   │   └── xxx
-├── src               
-│   ├── airflow                     -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── app-api                     -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── app-frontend                -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── app-monitoring              -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── batch-prediction-pipeline   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── deploy                      -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── feature-pipeline            -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-│   ├── training-pipeline           -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
-```
 
 ## Infrastructure
 
@@ -127,6 +102,47 @@ ansible-playbook system.yml
 ```
 
 *Configurations takes between 5-10 minutes*
+
+## LOCAL DEBUGGING
+>[NOTE!]
+> Make sure the configure all the credentials before
+
+To debug the application locally, run the following commands: 
+
+```bash
+docker-compose build src/airflow/
+docker-compose up src/airflow/
+
+docker-compose build src/deploy/
+docker-compose up src/deploy
+```
+
+## PROJECT STRUCTURE
+The project main structure is as follows:
+```
+├── README.md                       -> Lorem Ipsum is simply dummy text of the printing and typesetting industry  
+├── .github/workflows               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+│   ├── CI/CD Pipelines             -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+├── infastructure                   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+│   ├── ansible                     -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+│   │   ├── group_vars              -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+│   │   ├── playbooks               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+│   │   └── hosts.ini               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+│   ├── terraform                   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
+│   │   ├── modules
+│   │   ├── xxx
+│   │   └── xxx
+├── src               
+│   ├── airflow                     
+│   ├── app-api                     
+│   ├── app-frontend                
+│   ├── app-monitoring              
+│   ├── batch-prediction-pipeline   
+│   ├── deploy                      
+│   ├── feature-pipeline            
+│   ├── training-pipeline           
+```
+
 
 ## Main Stack
 
