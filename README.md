@@ -8,6 +8,8 @@ allocate resources efficiently.
 - [ML Lifecycle](#ml-lifecycle)
 - [Infrastructure](#infrastructure)
     - [Architecture](#architecture)
+- [Configuration](#how-to-run)
+    - [Credentials](#credentials)
     - [Build with Terraform](#build-with-terraform)
     - [Configure with Ansible](#configure-with-ansible)
 - [Project Structure](#project-structure)
@@ -52,12 +54,79 @@ The project main structure is as follows:
 ### Architecture 
 <img src="./assets/images/architecture-diagram.png" />
 
+## How to Run?
+
+### Credentials
+
+To configure the credentials values there are two possible ways: 
+
+1. Create .env files based on the .env.default values of the different folders and set values.
+
+- Folders to check 
+- src/app-api 
+- batch-prediction-pipeline 
+- training-pipeline 
+- feature-pipeline 
+
+2. Set all necesary credentials as environment variables, a 'settings.py' file will automatically load the variables.
+
+```bash 
+export FS_API_KEY=${value}
+export FS_PROJECT_NAME=${value}  
+export WANDB_API_KEY=${value}  
+export WANDB_ENTITY=${value}  
+export WANDB_PROJECT=${value}  
+export AWS_ACCESS_KEY_ID=${value}  
+export AWS_SECRET_ACCESS_KEY=${value}  
+export AWS_BUCKET_NAME=${value}  
+```
+
 ### Build with Terraform 
 
+1. Configure credentials (if were not already defined as env variables)
+```bash 
+export AWS_ACCESS_KEY_ID=${value}  
+export AWS_SECRET_ACCESS_KEY=${value}  
+```
+
+2. Run the follwing command:
+```bash
+cd infrastructure/terraform
+terraform plan
+terraform apply -auto-approve
+```
 
 ### Configure with Ansible
 
+1. Upload your keypair
+```bash
+mkdir {WORKDIR}/infrastructure/ansible/keys                                             # Create key folder
+mv {KEYPAIR_PATH}/TF_EnergyConsumption.pem {workdir}/infrastructure/ansible/keys        # Upload your key
+```
 
+2. Configure API keys
+There is a default file with all the necessary APIs keys
+```bash 
+cat {ANSIBLE_PATH}/inventories/dev/group_vars/secrets.default.yml >> secrets.test.yml    # Configure all the API keys in a new file    
+ansible-vault encrypt {ANSIBLE_PATH}/inventories/dev/group_vars/secrets.enc.yml
+```
+
+3. Configure ansible-vault password
+```bash
+{your_ansible_password} >> {ANSIBLE_PATH}/inventories/dev/group_vars/secrets-key
+```
+
+4. Configure IP addresses
+*This can be done after deploying your infrastructure, because public IP addresses for the servers are randomly assigned from a pool.*
+Open the following file: {ANSIBLE_PATH}/inventories/dev/hosts.ini and replaced the IP addresses.
+
+5. Configurate servers.
+Once all previous steps are correctly done, configure the servers running the following command:
+```bash
+ansible-playbook system.yml
+```
+
+*Configurations takes between 5-10 minutes*
 
 ## Main Stack
 
@@ -83,3 +152,22 @@ The project main structure is as follows:
 
 ## User Interface
 Two different webpages UI were built, the fisrt one for visualizing the forecasting data of the differents zones, while the other allows to compare the predicted data with the truth data collected each hour.
+
+<table width="100%"> 
+<tr>
+<td width="50%">      
+&nbsp; 
+<br>
+<p align="center">
+  PREDICTION
+</p>
+<img src="./assets/images/prediction.png">
+</td> 
+<td width="50%">
+<br>
+<p align="center">
+  MONITORING
+</p>
+<img src="./assets/images/monitoring.png">  
+</td>
+</table>
