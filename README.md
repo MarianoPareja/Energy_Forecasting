@@ -130,8 +130,6 @@ The project main structure is as follows:
 │   │   └── hosts.ini               -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
 │   ├── terraform                   -> Lorem Ipsum is simply dummy text of the printing and typesetting industry
 │   │   ├── modules
-│   │   ├── xxx
-│   │   └── xxx
 ├── src               
 │   ├── airflow                     
 │   ├── app-api                     
